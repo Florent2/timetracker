@@ -31,12 +31,15 @@ gem 'sqlite3-ruby', :require => 'sqlite3'
 # end
 gem "haml"
 gem "haml-rails"
+gem 'compass'
 gem "jquery-rails"
 gem "validates_lengths_from_database"
 gem "annotate", :group => :development
 gem "faker", :group => [:development, :test]
 gem "fabrication", :group => [:development, :test]
-gem "rspec-rails", ">= 2.2.1", :group => :test
+gem "rspec-rails", ">= 2.2.1", :group => [:development, :test]
+gem "capybara", :group => [:development, :test]
+gem "steak", :group => [:development, :test]
 gem "database_cleaner", :group => :test
 gem "webmock", :group => :test
 gem "spork", :group => :test
@@ -45,6 +48,4 @@ gem "autotest-rails-pure", :group => :test
 gem "autotest-growl", :group => :test
 gem "autotest-fsevent", :group => :test
 gem "shoulda", :group => :test
-gem "capybara", :group => :test
-gem "steak", :group => :test
-gem "fuubar", :group => :test
+gem "fuubar", :group => [:development, :test]
