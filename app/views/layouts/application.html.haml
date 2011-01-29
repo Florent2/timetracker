@@ -12,7 +12,7 @@
       #header
         %h1= yield :title
       #sidebar
-        = link_to "New Task", new_task_path
+        = link_to "New Task", new_task_path, :class => "button"
         - if @projects.present?
           %h2 Projects
           %ul

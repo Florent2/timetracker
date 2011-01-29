@@ -32,6 +32,7 @@ gem 'sqlite3-ruby', :require => 'sqlite3'
 gem "haml"
 gem "haml-rails"
 gem 'compass'
+gem 'fancy-buttons'
 gem "jquery-rails"
 gem "validates_lengths_from_database"
 gem "attribute_normalizer"
