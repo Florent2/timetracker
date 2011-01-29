@@ -1,0 +1,17 @@
+.bundle
+db/*.sqlite3
+log/*.log
+tmp/**/*
+config/database.yml
+spec/views
+spec/controllers
+spec/requests"
+log/
+tmp/
+db/schema.rb
+.iterm-rails.config
+.rvmrc
+.DS_Store
+spec/helpers
+spec/routing
+spec/requests
