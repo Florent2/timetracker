@@ -11,7 +11,7 @@
     = f.text_field :name
   .field
     = f.label :project_id
-    = f.select :project_id, Project.all.collect {|p| [ p.name, p.id ] }, { :include_blank => true }
+    = f.select :project_id, Project.recents_first.collect {|p| [ p.name, p.id ] }, { :include_blank => true }
   .field
     = f.label :project_name
     = f.text_field :project_name

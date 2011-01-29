@@ -6,4 +6,6 @@ class Project < ActiveRecord::Base
 
   validates_lengths_from_database  
   validates :name, :presence => true, :uniqueness => true
+  
+  scope :recents_first, order("updated_at DESC")
 end

@@ -4,7 +4,7 @@ class Task < ActiveRecord::Base
   
   normalize_attributes :name
     
-  belongs_to :project
+  belongs_to :project, :touch => true
   
   validates_lengths_from_database
   validates_length_of :project_name, :maximum => 0, :if => :project, :on => :create, :message => "You can't write a project name AND choose a project in the list"

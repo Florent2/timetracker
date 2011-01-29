@@ -12,6 +12,11 @@
       #header
         %h1= yield :title
       #sidebar
-      #content
-        = yield
-    = javascript_include_tag :defaults    
+        = link_to "New Task", new_task_path
+        - if @projects.present?
+          %h2 Projects
+          %ul
+            - @projects.each do |project|
+              %li= link_to project.name, project
+      #content= yield
+    = javascript_include_tag :defaults

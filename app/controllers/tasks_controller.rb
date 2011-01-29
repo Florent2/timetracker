@@ -9,7 +9,7 @@ class TasksController < ApplicationController
   end
 
   def new
-    @task = Task.new
+    @task = Task.new :project => Project.recents_first.first
   end
 
   def edit
