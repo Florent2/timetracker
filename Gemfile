@@ -34,6 +34,7 @@ gem "haml-rails"
 gem 'compass'
 gem "jquery-rails"
 gem "validates_lengths_from_database"
+gem "attribute_normalizer"
 gem "annotate", :group => :development
 gem "faker", :group => [:development, :test]
 gem "fabrication", :group => [:development, :test]
@@ -48,4 +49,5 @@ gem "autotest-rails-pure", :group => :test
 gem "autotest-growl", :group => :test
 gem "autotest-fsevent", :group => :test
 gem "shoulda", :group => :test
+gem "launchy", :group => :test
 gem "fuubar", :group => [:development, :test]
