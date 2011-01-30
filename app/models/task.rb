@@ -16,8 +16,20 @@ class Task < ActiveRecord::Base
   validates_presence_of :name
   validates_uniqueness_of :name, :scope => :project_id 
   
+  def active?
+    sessions.exists?(:end => nil)
+  end
+  
   def duration
     sessions.inject(0.0) { |sum, session| sum + session.duration }
+  end
+
+  def interrupt!
+    result = false
+    if active?
+      result = !!sessions.active.first.finish!
+    end
+    result
   end
   
   private

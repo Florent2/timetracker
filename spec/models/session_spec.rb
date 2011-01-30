@@ -29,6 +29,21 @@ describe Session do
       Fabricate(:session, :start => DateTime.current.advance(:hours => -1, :minutes => -20), :end => nil).duration.should == 1.33
     end
   end
+  
+  describe "#finish!" do
+    it "returns the current time and sets end attribute to current time if it's nil" do
+      session = Fabricate :session
+      result  = session.finish!
+      result.should be_true
+      session.end.should == result
+    end
+    it "returns false if end is already set" do
+      session   = Fabricate :session, :end => Time.zone.now.advance(:hours => 1)
+      end_value = session.end
+      session.finish!.should be_false
+      session.end.should == end_value
+    end
+  end
 end
 
 # == Schema Information

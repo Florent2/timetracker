@@ -1,5 +1,3 @@
-%p#notice= notice
-
 %p
   %b Name:
   = @task.name
@@ -9,7 +7,20 @@
 %p
   %b Duration:
   = @task.duration
-  
+%p
+  %b Status:
+  - if @task.active?
+    Running
+  - else
+    Pending
+%p
+  - if @task.active?
+    = link_to "Interrupt", task_interrupt_path(@task), :method => :put, :class => "button"
+  - else
+    = link_to "Resume", task_resume_path(@task), :method => :put, :class => "button"
+  = link_to 'Edit', edit_task_path(@task), :class => "button"
+  = link_to 'Destroy', @task, :confirm => 'Are you sure?', :method => :delete, :class => "button"
+
 - if @task.sessions.present?
   %h2 Sessions
   %ul
