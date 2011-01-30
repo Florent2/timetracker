@@ -26,6 +26,18 @@ feature "Create Task", %q{
     page.should have_content("Grocery List")
   end
   
+  scenario "Task Creation With Boteh Project Name And Existing Project Selected: It Picks Up The Project Name" do
+    Fabricate :project, :name => "Grocery List"
+    Fabricate :project, :name => "Music Maker"
+    visit "/tasks/new"
+    fill_in "task[name]", :with => "Setup Application"
+    fill_in "task[project_name]", :with => "Astronomy Wizard"    
+    select "Grocery List", :from => "task[project_id]"
+    click_button "Create Task" 
+    page.should have_content("Setup Application")
+    page.should have_content("Astronomy Wizard")    
+  end
+  
   scenario "Missing Name" do
     visit "/tasks/new"
     fill_in "task[project_name]", :with => "Grocery List"
