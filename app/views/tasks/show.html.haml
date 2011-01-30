@@ -6,7 +6,16 @@
 %p
   %b Project:
   = link_to @task.project.name, @task.project
-
-= link_to 'Edit', edit_task_path(@task)
-\|
+%p
+  %b Duration:
+  = @task.duration
+  
+- if @task.sessions.present?
+  %h2 Sessions
+  %ul
+    - @task.sessions.each do |session|
+      - if session.end?
+        %p= "From #{session.start} to #{session.end} (duration = #{session.duration})"
+      - else
+        %p= "Running since #{session.start} (duration = #{session.duration})"
 = link_to 'Back', tasks_path

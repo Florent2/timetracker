@@ -5,7 +5,9 @@ class Task < ActiveRecord::Base
   normalize_attributes :name
     
   belongs_to :project, :touch => true
-
+  has_many :sessions, :dependent => :destroy
+  accepts_nested_attributes_for :sessions, :reject_if => :all_blank 
+     
   before_validation :create_or_associate_project_from_project_name, :on => :create
     
   validates_lengths_from_database
@@ -14,6 +16,10 @@ class Task < ActiveRecord::Base
   validates_presence_of :name
   validates_uniqueness_of :name, :scope => :project_id 
   
+  def duration
+    sessions.inject(0.0) { |sum, session| sum + session.duration }
+  end
+  
   private
   
   def create_or_associate_project_from_project_name
@@ -21,3 +27,15 @@ class Task < ActiveRecord::Base
   end 
   
 end
+
+# == Schema Information
+#
+# Table name: tasks
+#
+#  id         :integer         not null, primary key
+#  name       :string(255)
+#  project_id :integer
+#  created_at :datetime
+#  updated_at :datetime
+#
+

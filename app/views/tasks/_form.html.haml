@@ -15,5 +15,10 @@
   .field
     = f.label :project_name
     = f.text_field :project_name
+  = f.fields_for :sessions do |session_form|
+    .field  
+      = session_form.label :start
+      = session_form.datetime_select :start, :discard_year => true, :discard_month => true
+      
   .actions
     = f.submit 'Create Task', :class => "button"

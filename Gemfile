@@ -36,6 +36,7 @@ gem 'fancy-buttons'
 gem "jquery-rails"
 gem "validates_lengths_from_database"
 gem "attribute_normalizer"
+gem "validates_timeliness"
 gem "annotate", :group => :development
 gem "faker", :group => [:development, :test]
 gem "fabrication", :group => [:development, :test]

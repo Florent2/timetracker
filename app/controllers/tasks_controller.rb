@@ -10,6 +10,7 @@ class TasksController < ApplicationController
 
   def new
     @task = Task.new :project => Project.recents_first.first
+    @task.sessions.build :start => DateTime.current    
   end
 
   def edit
