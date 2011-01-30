@@ -18,5 +18,8 @@
           %ul
             - @projects.each do |project|
               %li= link_to project.name, project
-      #content= yield
+      #content
+        - flash.each do |name, msg|
+          = content_tag :div, msg, :class => name
+        = yield
     = javascript_include_tag :defaults
