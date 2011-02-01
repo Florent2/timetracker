@@ -12,7 +12,7 @@
       #header
         %h1= yield :title
       #sidebar
-        = link_to "New Task", new_task_path, :class => "button"
+        = link_to "New Task", new_task_path
         %p= link_to "All Tasks", tasks_path
         - if running_task = Task.running_task
           %h2 Running Task
