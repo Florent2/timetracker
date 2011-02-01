@@ -16,6 +16,8 @@ class Task < ActiveRecord::Base
   validates_presence_of :name
   validates_uniqueness_of :name, :scope => :project_id 
   
+  after_create :interrupt_previous_running_task_if_the_new_one_is_running
+  
   def current_duration
     return 0.0 if !running?
     sessions.running.first.duration
@@ -44,7 +46,7 @@ class Task < ActiveRecord::Base
   end
   
   def self.running_task
-    Task.all.select { |task| task.running? }.first
+    Task.running_tasks.first
   end
   
   def status
@@ -56,8 +58,16 @@ class Task < ActiveRecord::Base
   def create_or_associate_project_from_project_name
     self.project = Project.find_or_create_by_name project_name if project_name.present? # can't use :if => :project_name in the before_validation call, as it is called even when project_name is ""
   end 
+
+  def interrupt_previous_running_task_if_the_new_one_is_running
+    (Task.running_tasks - [self]).first.try :interrupt!
+  end
   
+  def self.running_tasks
+    Task.all.select { |task| task.running? }
+  end
 end
+
 
 # == Schema Information
 #
@@ -68,5 +78,6 @@ end
 #  project_id :integer
 #  created_at :datetime
 #  updated_at :datetime
+#  estimation :float
 #
 

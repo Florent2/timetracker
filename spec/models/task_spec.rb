@@ -126,7 +126,16 @@ describe Task do
       Task.running_task.should be_nil
     end
   end
+  
+  it "new running task interrupts previous running task" do
+    running_task = Fabricate :running_task
+    new_task = Fabricate :running_task
+    running_task.running?.should be_false
+    new_task.running?.should be_true
+  end
+  
 end
+
 
 # == Schema Information
 #
@@ -137,5 +146,6 @@ end
 #  project_id :integer
 #  created_at :datetime
 #  updated_at :datetime
+#  estimation :float
 #
 

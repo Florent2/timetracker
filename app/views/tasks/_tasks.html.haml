@@ -4,12 +4,15 @@
     %th Project
     %th Status
     %th Duration
+    %th Estimation
+    %th Action
 
   - tasks.each do |task|
     %tr
       %td= link_to task.name, task
       %td= link_to task.project.name, task.project
       %td= task.status
-      %td
-        = task.duration
-        hours
+      %td= task.duration
+      %td= task.estimation
+      %td= if task.running? then interrupt_link(task) else resume_link(task) end
+          
