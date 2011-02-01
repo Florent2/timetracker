@@ -22,7 +22,7 @@ class Task < ActiveRecord::Base
   end
   
   def duration
-    sessions.inject(0.0) { |sum, session| sum + session.duration }
+    sessions.inject(0.0) { |sum, session| sum + session.duration }.round 2
   end
 
   def interrupt!
@@ -46,7 +46,11 @@ class Task < ActiveRecord::Base
   def self.running_task
     Task.all.select { |task| task.running? }.first
   end
-    
+  
+  def status
+    if running? then "running" else "interrupted" end
+  end
+  
   private
   
   def create_or_associate_project_from_project_name

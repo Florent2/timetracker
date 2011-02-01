@@ -10,10 +10,7 @@
   hours
 %p
   %b Status:
-  - if @task.running?
-    Running
-  - else
-    Interrupted
+  = @task.status
 %p
   - if @task.running?
     = link_to "Interrupt", task_interrupt_path(@task), :method => :put, :class => "button"

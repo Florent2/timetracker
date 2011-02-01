@@ -1,13 +1,15 @@
 %table
   %tr
     %th Name
-    %th
-    %th
-    %th
+    %th Project
+    %th Status
+    %th Duration
 
   - tasks.each do |task|
     %tr
-      %td= task.name
-      %td= link_to 'Show', task
-      %td= link_to 'Edit', edit_task_path(task)
-      %td= link_to 'Destroy', task, :confirm => 'Are you sure?', :method => :delete
+      %td= link_to task.name, task
+      %td= link_to task.project.name, task.project
+      %td= task.status
+      %td
+        = task.duration
+        hours

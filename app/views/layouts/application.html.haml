@@ -13,8 +13,10 @@
         %h1= yield :title
       #sidebar
         = link_to "New Task", new_task_path, :class => "button"
+        %p= link_to "All Tasks", tasks_path
         - if running_task = Task.running_task
           %h2 Running Task
+          %p (#{link_to "interrupt", task_interrupt_path(running_task), :method => :put})
           %p= link_to running_task.name, running_task
           %p= "Current Duration = #{running_task.current_duration} hours"
           %p= "Total Duration = #{running_task.duration} hours"
