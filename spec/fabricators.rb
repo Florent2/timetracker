@@ -13,5 +13,5 @@ Fabricator(:session) do
 end
 
 Fabricator(:active_task, :from => :task) do
-  after_create { |task| task.sessions << Fabricate(:session, :task => task, :end => nil) }
+  after_create { |task| task.sessions << Fabricate(:session, :task => task, :finish => nil) }
 end

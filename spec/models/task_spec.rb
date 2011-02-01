@@ -47,9 +47,9 @@ describe Task do
     end
     it "for a task with several sessions" do
       task = Fabricate :task
-      Fabricate :session, :task => task, :start => DateTime.current.advance(:hours => -1), :end => DateTime.current.advance(:hours => +1) # 2 hours
-      Fabricate :session, :task => task, :start => DateTime.current.advance(:hours => +1), :end => DateTime.current.advance(:hours => +4) # 3 hours
-      Fabricate :session, :task => task, :start => DateTime.current.advance(:hours => +4), :end => DateTime.current.advance(:hours => +6) # 2 hours
+      Fabricate :session, :task => task, :start => DateTime.current.advance(:hours => -1), :finish => DateTime.current.advance(:hours => +1) # 2 hours
+      Fabricate :session, :task => task, :start => DateTime.current.advance(:hours => +1), :finish => DateTime.current.advance(:hours => +4) # 3 hours
+      Fabricate :session, :task => task, :start => DateTime.current.advance(:hours => +4), :finish => DateTime.current.advance(:hours => +6) # 2 hours
       task.duration.should == 7.0
     end
   end
@@ -57,13 +57,13 @@ describe Task do
   describe "#active?" do
     let(:task) { Fabricate :task }
     it "returns true if there is an unfinished session" do
-      Fabricate :session, :task => task, :end => DateTime.current.advance(:hours => 4)
+      Fabricate :session, :task => task, :finish => DateTime.current.advance(:hours => 4)
       Fabricate :session, :task => task
       task.active?.should be_true
     end
     it "returns false if there are only finished sessions" do
-      Fabricate :session, :task => task, :end => DateTime.current.advance(:hours => 4)
-      Fabricate :session, :task => task, :end => DateTime.current.advance(:hours => 4)
+      Fabricate :session, :task => task, :finish => DateTime.current.advance(:hours => 4)
+      Fabricate :session, :task => task, :finish => DateTime.current.advance(:hours => 4)
       task.active?.should be_false
     end
     it "returns false if there is no session" do
@@ -82,8 +82,8 @@ describe Task do
       task.interrupt!.should be_false
     end
     it "returns false if there are only finished session" do
-      Fabricate :session, :task => task, :end => DateTime.current.advance(:hours => 4)
-      Fabricate :session, :task => task, :end => DateTime.current.advance(:hours => 4)      
+      Fabricate :session, :task => task, :finish => DateTime.current.advance(:hours => 4)
+      Fabricate :session, :task => task, :finish => DateTime.current.advance(:hours => 4)      
       task.interrupt!.should be_false      
     end
   end

@@ -3,7 +3,7 @@ class CreateSessions < ActiveRecord::Migration
     create_table :sessions do |t|
       t.integer :task_id
       t.datetime :start
-      t.datetime :end
+      t.datetime :finish
 
       t.timestamps
     end

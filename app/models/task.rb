@@ -17,7 +17,7 @@ class Task < ActiveRecord::Base
   validates_uniqueness_of :name, :scope => :project_id 
   
   def active?
-    sessions.exists?(:end => nil)
+    sessions.exists?(:finish => nil)
   end
   
   def duration
