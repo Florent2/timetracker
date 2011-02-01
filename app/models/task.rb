@@ -18,6 +18,8 @@ class Task < ActiveRecord::Base
   
   after_create :interrupt_previous_running_task_if_the_new_one_is_running
   
+  scope :recents_first, order("updated_at DESC")
+  
   def current_duration
     return 0.0 if !running?
     sessions.running.first.duration
@@ -33,6 +35,10 @@ class Task < ActiveRecord::Base
       result = !!sessions.running.first.finish!
     end
     result
+  end
+  
+  def last_update_on
+    updated_at.to_date
   end
 
   def resume!

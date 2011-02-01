@@ -3,7 +3,7 @@ class ProjectsController < ApplicationController
   before_filter :find_project
   
   def show
-    @tasks = @project.tasks
+    @tasks = @project.tasks.recents_first
   end
 
   private

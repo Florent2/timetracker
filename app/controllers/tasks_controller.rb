@@ -2,7 +2,7 @@ class TasksController < ApplicationController
   before_filter :find_task
   
   def index
-    @tasks = Task.all
+    @tasks = Task.recents_first
   end
 
   def show
