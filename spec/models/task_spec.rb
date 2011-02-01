@@ -54,20 +54,20 @@ describe Task do
     end
   end
   
-  describe "#active?" do
+  describe "#running?" do
     let(:task) { Fabricate :task }
     it "returns true if there is an unfinished session" do
       Fabricate :session, :task => task, :finish => DateTime.current.advance(:hours => 4)
       Fabricate :session, :task => task
-      task.active?.should be_true
+      task.running?.should be_true
     end
     it "returns false if there are only finished sessions" do
       Fabricate :session, :task => task, :finish => DateTime.current.advance(:hours => 4)
       Fabricate :session, :task => task, :finish => DateTime.current.advance(:hours => 4)
-      task.active?.should be_false
+      task.running?.should be_false
     end
     it "returns false if there is no session" do
-      task.active?.should be_false
+      task.running?.should be_false
     end
   end
   
@@ -76,7 +76,7 @@ describe Task do
     it "returns true and finishes the unfinished session if there is one" do
       Fabricate :session, :task => task      
       task.interrupt!.should be_true
-      task.active?.should be_false
+      task.running?.should be_false
     end
     it "returns false it there is no session" do
       task.interrupt!.should be_false

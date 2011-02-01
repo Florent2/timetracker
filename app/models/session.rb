@@ -6,11 +6,7 @@ class Session < ActiveRecord::Base
   
   validates_datetime :finish, :after => :start, :allow_blank => true
   
-  scope :active, where(:finish => nil)
-  
-  def active?
-    finish.nil?
-  end
+  scope :running, where(:finish => nil)
   
   def duration
     finish_or_now = finish || Time.zone.now
@@ -19,12 +15,16 @@ class Session < ActiveRecord::Base
   
   def finish!
     result = false
-    if active?
+    if running?
       result = Time.zone.now
       update_attributes! :finish => result
     end
     result    
   end
+
+  def running?
+    finish.nil?
+  end  
   
 end
 

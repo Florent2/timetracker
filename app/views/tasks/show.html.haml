@@ -9,12 +9,12 @@
   = @task.duration
 %p
   %b Status:
-  - if @task.active?
+  - if @task.running?
     Running
   - else
     Pending
 %p
-  - if @task.active?
+  - if @task.running?
     = link_to "Interrupt", task_interrupt_path(@task), :method => :put, :class => "button"
   - else
     = link_to "Resume", task_resume_path(@task), :method => :put, :class => "button"

@@ -16,7 +16,7 @@ class Task < ActiveRecord::Base
   validates_presence_of :name
   validates_uniqueness_of :name, :scope => :project_id 
   
-  def active?
+  def running?
     sessions.exists?(:finish => nil)
   end
   
@@ -26,8 +26,8 @@ class Task < ActiveRecord::Base
 
   def interrupt!
     result = false
-    if active?
-      result = !!sessions.active.first.finish!
+    if running?
+      result = !!sessions.running.first.finish!
     end
     result
   end
