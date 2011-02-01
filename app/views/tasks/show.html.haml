@@ -7,6 +7,7 @@
 %p
   %b Duration:
   = @task.duration
+  hours
 %p
   %b Status:
   - if @task.running?
@@ -25,8 +26,11 @@
   %h2 Sessions
   %ul
     - @task.sessions.each do |session|
-      - if session.finish?
-        %p= "From #{session.start} to #{session.finish} (duration = #{session.duration})"
-      - else
-        %p= "Running since #{session.start} (duration = #{session.duration})"
+      %li
+        - if session.finish?
+          = "From #{session.start.to_s(:short)} to #{session.finish.to_s(:short)}"
+        - else
+          = "Running since #{session.start.to_s(:short)}"
+        %br
+        = "Duration = #{session.duration} hours"
 = link_to 'Back', tasks_path

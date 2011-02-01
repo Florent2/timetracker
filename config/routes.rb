@@ -5,4 +5,6 @@ Timetracker2::Application.routes.draw do
   end
   
   resources :projects 
+  
+  root :to => "tasks#new"
 end
