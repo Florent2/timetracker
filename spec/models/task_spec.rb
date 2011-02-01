@@ -87,6 +87,45 @@ describe Task do
       task.interrupt!.should be_false      
     end
   end
+  
+  describe "#resume!" do
+    it "returns false if the task is already running" do
+      Fabricate(:running_task).resume!.should be_false
+    end
+    it "creates a new running session for the task" do
+      task = Fabricate :interrupted_task
+      task.resume!
+      task.running?.should be_true
+    end
+    it "interrupts any other running task" do
+      running_task = Fabricate :running_task
+      Fabricate(:interrupted_task).resume!
+      running_task.running?.should be_false
+    end
+  end
+  
+  describe "#current_duration" do
+    it "returns 0.0 if the task is interrupted" do
+      Fabricate(:interrupted_task).current_duration.should == 0.0
+    end
+    it "returns the duration of the running session if the task is running" do
+      task = Fabricate(:task)
+      running_session = Fabricate :session, :task => task, :start => DateTime.current.advance(:hours => -1)
+      task.current_duration.should == 1.0
+    end
+  end
+  
+  describe ".running_task" do
+    it "returns the running task if it exists" do
+      2.times { Fabricate :interrupted_task }
+      running_task = Fabricate :running_task
+      Task.running_task.should == running_task
+    end
+    it "returns nil if there is no running task" do
+      2.times { Fabricate :interrupted_task }
+      Task.running_task.should be_nil
+    end
+  end
 end
 
 # == Schema Information

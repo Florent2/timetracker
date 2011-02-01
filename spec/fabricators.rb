@@ -1,9 +1,9 @@
 Fabricator(:project) do
-  name "Project Name"
+  name { Fabricate.sequence(:name) { |i| "Project ##{i}" } }
 end
 
 Fabricator(:task) do
-  name "Task Name"
+  name { Fabricate.sequence(:name) { |i| "Task ##{i}" } }
   project!
 end
 
@@ -14,4 +14,8 @@ end
 
 Fabricator(:running_task, :from => :task) do
   after_create { |task| task.sessions << Fabricate(:session, :task => task, :finish => nil) }
+end
+
+Fabricator(:interrupted_task, :from => :task) do
+  after_create { |task| task.sessions << Fabricate(:session, :task => task, :start => DateTime.current.advance(:hours => -1), :finish => DateTime.current) }
 end

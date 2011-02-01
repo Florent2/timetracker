@@ -13,7 +13,7 @@
   - if @task.running?
     Running
   - else
-    Pending
+    Interrupted
 %p
   - if @task.running?
     = link_to "Interrupt", task_interrupt_path(@task), :method => :put, :class => "button"

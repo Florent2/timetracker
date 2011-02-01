@@ -37,13 +37,24 @@ class TasksController < ApplicationController
     @task.destroy
     redirect_to tasks_url
   end
+
+# non REST actions
   
   def interrupt
     @task = Task.find params[:task_id]
     if @task.interrupt!
       redirect_to :back, :notice => "This task has been interrupted"      
     else
-      redirect_to @task, :alert => "This task is already interrupted"
+      redirect_to :back, :alert => "This task is already interrupted"
+    end
+  end
+
+  def resume
+    @task = Task.find params[:task_id]
+    if @task.resume!
+      redirect_to :back, :notice => "This task has been resumeed"      
+    else
+      redirect_to :back, :alert => "This task is already running"
     end
   end
 

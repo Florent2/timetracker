@@ -16,8 +16,9 @@ class Task < ActiveRecord::Base
   validates_presence_of :name
   validates_uniqueness_of :name, :scope => :project_id 
   
-  def running?
-    sessions.exists?(:finish => nil)
+  def current_duration
+    return 0.0 if !running?
+    sessions.running.first.duration
   end
   
   def duration
@@ -31,7 +32,21 @@ class Task < ActiveRecord::Base
     end
     result
   end
+
+  def resume!
+    return false if running?
+    Task.running_task.try :interrupt!
+    self.sessions.create :start => DateTime.now
+  end
   
+  def running?
+    sessions.exists?(:finish => nil)
+  end
+  
+  def self.running_task
+    Task.all.select { |task| task.running? }.first
+  end
+    
   private
   
   def create_or_associate_project_from_project_name
