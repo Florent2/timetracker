@@ -37,20 +37,20 @@ describe Task do
     end
   end
   
-  describe "#duration returns task duration in hours" do
+  describe "#duration_total returns task duration in hours" do
     it "returns 0 if task has no sessions" do
-      Fabricate(:task).duration.should == 0.0
+      Fabricate(:task).duration_total.should == 0.0
     end
     it "for a task with an unfinished session it calculates from the current time" do
       session = Fabricate :session, :start => DateTime.current.advance(:hours => -1)
-      session.task.duration.should == 1.0
+      session.task.duration_total.should == 1.0
     end
     it "for a task with several sessions" do
       task = Fabricate :task
       Fabricate :session, :task => task, :start => DateTime.current.advance(:hours => -1), :finish => DateTime.current.advance(:hours => +1) # 2 hours
       Fabricate :session, :task => task, :start => DateTime.current.advance(:hours => +1), :finish => DateTime.current.advance(:hours => +4) # 3 hours
       Fabricate :session, :task => task, :start => DateTime.current.advance(:hours => +4), :finish => DateTime.current.advance(:hours => +6) # 2 hours
-      task.duration.should == 7.0
+      task.duration_total.should == 7.0
     end
   end
   
@@ -104,14 +104,14 @@ describe Task do
     end
   end
   
-  describe "#current_duration" do
+  describe "#duration_current" do
     it "returns 0.0 if the task is interrupted" do
-      Fabricate(:interrupted_task).current_duration.should == 0.0
+      Fabricate(:interrupted_task).duration_current.should == 0.0
     end
     it "returns the duration of the running session if the task is running" do
       task = Fabricate(:task)
       running_session = Fabricate :session, :task => task, :start => DateTime.current.advance(:hours => -1)
-      task.current_duration.should == 1.0
+      task.duration_current.should == 1.0
     end
   end
   
@@ -134,6 +134,39 @@ describe Task do
     new_task.running?.should be_true
   end
   
+  describe "#duration_on_date(date)" do
+    it "returns 0.00 if there was no session on this date" do
+      task = Fabricate :task
+      task.duration_on_date(Date.yesterday).should == 0.00
+    end
+    it "returns the duration of sessions of this date" do
+      task = Fabricate :task
+      task.sessions << Fabricate(:session, :task => task, :start => DateTime.current.advance(:days => -1), :finish => DateTime.current.advance(:days => -1, :hours => +2)) # 2 hours   
+      task.sessions << Fabricate(:session, :task => task, :start => DateTime.current.advance(:days => -1, :hours => +2), :finish => DateTime.current.advance(:days => -1, :hours => +5.5)) # 3 hours   
+      task.sessions << Fabricate(:session, :task => task, :start => DateTime.current, :finish => DateTime.current.advance(:hours => +2.5)) # 2.5 hours   
+      task.duration_on_date(Date.yesterday).should == 5.50
+      task.duration_on_date(Date.today).should == 2.50      
+    end
+  end
+  
+  it ".by_dates_from(tasks, date) returns an hash whose keys are dates and values are array of tasks having sessions on the key date" do
+    task1 = Fabricate :task # 10 days ago
+    task1.sessions << Fabricate(:session, :task => task1, :start => DateTime.current.advance(:days => -10), :finish => DateTime.current.advance(:days => -10, :hours => +2))
+
+    task2 = Fabricate :task # 4 and 2 days ago
+    task2.sessions << Fabricate(:session, :task => task2, :start => DateTime.current.advance(:days => -4), :finish => DateTime.current.advance(:days => -4, :hours => +2))
+    task2.sessions << Fabricate(:session, :task => task2, :start => DateTime.current.advance(:days => -2), :finish => DateTime.current.advance(:days => -2, :hours => +2))
+    
+    task3 = Fabricate :task # today and 2 days ago
+    task3.sessions << Fabricate(:session, :task => task3, :start => DateTime.current, :finish => DateTime.current.advance(:hours => +2))
+    task3.sessions << Fabricate(:session, :task => task3, :start => DateTime.current.advance(:days => -2), :finish => DateTime.current.advance(:days => -2, :hours => +2))
+    
+    Task.by_dates_from(Task, Date.today.advance(:days => -5)).should == {
+      Date.today.advance(:days => -4) => [task2],
+      Date.today.advance(:days => -2) => [task2, task3],
+      Date.today  => [task3]
+    }
+  end
 end
 
 

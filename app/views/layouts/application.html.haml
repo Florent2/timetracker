@@ -18,8 +18,8 @@
           %h2 Running Task
           %p= link_to running_task.name, running_task
           %p (#{interrupt_link running_task})          
-          %p= "Current Duration = #{running_task.current_duration} hours"
-          %p= "Total Duration = #{running_task.duration} hours"
+          %p= "Current Duration = #{running_task.duration_current} hours"
+          %p= "Total Duration = #{running_task.duration_total} hours"
         - if @projects.present?
           %h2 Projects
           %ul

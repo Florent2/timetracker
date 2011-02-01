@@ -3,11 +3,12 @@
     %th Name
     %th Project
     %th Status
-    %th Duration
+    %th This day
+    %th Total
     %th Estimation
     %th Action
 
-  - tasks.group_by(&:last_update_on).each do |date, tasks|  
+  - tasks_by_dates.each_pair do |date, tasks|
     %tr.date
       %td= date.to_s :human
     - tasks.each do |task|
@@ -15,7 +16,8 @@
         %td= link_to task.name, task
         %td= link_to task.project.name, task.project
         %td= task.status
-        %td= task.duration
+        %td= task.duration_on_date date
+        %td= task.duration_total
         %td= task.estimation
         %td= if task.running? then interrupt_link(task) else resume_link(task) end
           

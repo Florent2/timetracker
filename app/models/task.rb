@@ -18,17 +18,26 @@ class Task < ActiveRecord::Base
   
   after_create :interrupt_previous_running_task_if_the_new_one_is_running
   
-  scope :recents_first, order("updated_at DESC")
+  def self.by_dates_from(tasks, date)
+    result = {}
+    (date..Date.today).each { |date| result[date] = tasks.on_date(date) }
+    result.reject! { |date, tasks| tasks.empty? }
+    Hash[result.sort { |a, b| b <=> a }] # this revert the dates order: now from the most recent to the oldest (from http://stackoverflow.com/questions/4339553/sort-hash-by-key-return-hash-in-ruby)
+  end
   
-  def current_duration
+  def duration_current
     return 0.0 if !running?
     sessions.running.first.duration
   end
   
-  def duration
-    sessions.inject(0.0) { |sum, session| sum + session.duration }.round 2
+  def duration_on_date(date)
+    sessions.on_date(date).inject(0.0) { |sum, session| sum + session.duration }.round 2
   end
-
+  
+  def duration_total
+    reload.sessions.inject(0.0) { |sum, session| sum + session.duration }.round 2
+  end
+  
   def interrupt!
     result = false
     if running?
@@ -37,10 +46,6 @@ class Task < ActiveRecord::Base
     result
   end
   
-  def last_update_on
-    updated_at.to_date
-  end
-
   def resume!
     return false if running?
     Task.running_task.try :interrupt!
@@ -66,11 +71,15 @@ class Task < ActiveRecord::Base
   end 
 
   def interrupt_previous_running_task_if_the_new_one_is_running
-    (Task.running_tasks - [self]).first.try :interrupt!
+    Task.running_tasks.where("tasks.id <> ?", self.id).first.try :interrupt!
   end
-  
+
+  def self.on_date(date)
+    where("sessions.start" => date.beginning_of_day..date.end_of_day).includes(:sessions)
+  end
+    
   def self.running_tasks
-    Task.all.select { |task| task.running? }
+    where("sessions.finish" => nil).includes(:sessions)
   end
 end
 

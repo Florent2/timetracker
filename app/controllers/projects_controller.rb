@@ -3,7 +3,7 @@ class ProjectsController < ApplicationController
   before_filter :find_project
   
   def show
-    @tasks = @project.tasks.recents_first
+    @tasks_by_dates = Task.by_dates_from @project.tasks, Date.current.advance(:days => -7)
   end
 
   private

@@ -1,7 +1,6 @@
 %h1 #{@project.name}
 
-- if @tasks.present?
-  %h2 Tasks
-  = render "tasks/tasks", :tasks => @tasks
+- if @tasks_by_dates.present?
+  = render "tasks/tasks", :tasks_by_dates => @tasks_by_dates
 - else
   %p No tasks in this project.

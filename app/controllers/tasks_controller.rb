@@ -2,7 +2,7 @@ class TasksController < ApplicationController
   before_filter :find_task
   
   def index
-    @tasks = Task.recents_first
+    @tasks_by_dates = Task.by_dates_from Task, Date.current.advance(:days => -7)
   end
 
   def show
@@ -19,7 +19,7 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(params[:task])
     if @task.save
-      redirect_to @task, :notice => 'Task was successfully created.'
+      redirect_to @task, :notice => 'Task was successfully created'
     else
       render :action => "new"
     end
@@ -27,7 +27,7 @@ class TasksController < ApplicationController
 
   def update
     if @task.update_attributes(params[:task])
-      redirect_to @task, :notice => 'Task was successfully updated.'
+      redirect_to @task, :notice => 'Task was successfully updated'
     else
       render :action => "edit"
     end
@@ -35,7 +35,7 @@ class TasksController < ApplicationController
 
   def destroy
     @task.destroy
-    redirect_to tasks_url
+    redirect_to tasks_url, :notice => "'#{@task.name}' has been successfully destroyed"
   end
 
 # non REST actions
@@ -43,18 +43,18 @@ class TasksController < ApplicationController
   def interrupt
     @task = Task.find params[:task_id]
     if @task.interrupt!
-      redirect_to :back, :notice => "This task has been interrupted"      
+      redirect_to :back, :notice => "'#{@task.name}' has been interrupted"      
     else
-      redirect_to :back, :alert => "This task is already interrupted"
+      redirect_to :back, :alert => "'#{@task.name}' is already interrupted"
     end
   end
 
   def resume
     @task = Task.find params[:task_id]
     if @task.resume!
-      redirect_to :back, :notice => "This task has been resumeed"      
+      redirect_to :back, :notice => "'#{@task.name}' has been resumeed"      
     else
-      redirect_to :back, :alert => "This task is already running"
+      redirect_to :back, :alert => "'#{@task.name}' is already running"
     end
   end
 

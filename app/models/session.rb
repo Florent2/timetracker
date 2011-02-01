@@ -22,6 +22,11 @@ class Session < ActiveRecord::Base
     result    
   end
 
+    # we only compare the start datetime as we consider that a task does not pass midnight (I'm a day worker!)
+  def self.on_date(date)
+    where :start => date.beginning_of_day..date.end_of_day
+  end
+  
   def running?
     finish.nil?
   end  

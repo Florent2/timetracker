@@ -44,9 +44,15 @@ describe Session do
       session.finish.should == end_value
     end
   end
+  
+  it ".on_date(date) returns sessions of the given date" do
+    session1 = Fabricate :session, :start => DateTime.current.advance(:days => -1), :finish => DateTime.current.advance(:days => -1, :hours => +2)
+    session2 = Fabricate :session, :start => DateTime.current.advance(:days => -1, :hours => +2), :finish => DateTime.current.advance(:days => -1, :hours => +5.5)
+    session3 = Fabricate :session, :start => DateTime.current.advance(:hours => 0), :finish => DateTime.current.advance(:hours => +1)
+    Session.on_date(Date.yesterday).to_set.should == [session1, session2].to_set
+  end
+  
 end
-
-
 # == Schema Information
 #
 # Table name: sessions

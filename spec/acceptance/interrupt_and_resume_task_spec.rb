@@ -16,11 +16,11 @@ feature "Interrupt And Resume Task", %q{
   end
   
   scenario "Can't Interrupt Pending Task" do
-    task = Fabricate :running_task
+    task = Fabricate :running_task, :name => "Setup Application"
     visit "/tasks/#{task.id}"
     task.interrupt!    
     click_link "interrupt"    
-    page.should have_content("This task is already interrupted")
+    page.should have_content("'Setup Application' is already interrupted")
   end
   
   scenario "Task Resuming" do
@@ -46,7 +46,7 @@ feature "Interrupt And Resume Task", %q{
     visit "/tasks/new"
     fill_in "task[name]", :with => "Setup Application"
     fill_in "task[project_name]", :with => "Grocery List"
-    click_button "Create Task" 
+    click_button "Save" 
     Task.last.name.should == "Setup Application"
     Task.last.running?.should be_true
     running_task.running?.should be_false
