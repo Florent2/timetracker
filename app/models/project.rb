@@ -8,6 +8,10 @@ class Project < ActiveRecord::Base
   validates :name, :presence => true, :uniqueness => true
   
   scope :recents_first, order("updated_at DESC")
+  
+  def active_tasks
+    tasks.actives
+  end
 end
 
 # == Schema Information

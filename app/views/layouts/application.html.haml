@@ -26,7 +26,7 @@
             - @projects.each do |project|
               %li
                 = link_to project.name, project
-                = "(#{project.tasks.actives.size} active tasks)" if project.tasks.actives.present?
+                = "(#{project.active_tasks.size} active tasks)" if project.active_tasks.present?
       #content
         - flash.each do |name, msg|
           = content_tag :div, msg, :class => name
