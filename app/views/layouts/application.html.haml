@@ -14,12 +14,17 @@
       #sidebar
         = link_to "New Task", new_task_path
         %p= link_to "All Tasks", tasks_path
-        - if running_task = Task.running_task
+        - if @running_task
           %h2 Running Task
-          %p= link_to running_task.name, running_task
-          %p (#{interrupt_link running_task})          
-          %p= "Current Duration = #{running_task.duration_current} hours"
-          %p= "Total Duration = #{running_task.duration_total} hours"
+          %p= link_to @running_task.name, @running_task
+          %p (#{interrupt_link @running_task})          
+          %p= "Current Duration = #{@running_task.duration_current} hours"
+          %p= "Total Duration = #{@running_task.duration_total} hours"
+        - if @interrupted_tasks
+          %h2 Interrupted Tasks
+          %ul
+          - @interrupted_tasks.each do |interrupted_task|
+            %li= link_to interrupted_task.name, interrupted_task
         - if @projects.present?
           %h2 Projects
           %ul
