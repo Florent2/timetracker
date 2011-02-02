@@ -7,5 +7,5 @@ Timetracker2::Application.routes.draw do
   
   resources :projects 
   
-  root :to => "tasks#new"
+  root :to => "tasks#index"
 end
