@@ -39,6 +39,15 @@ class TasksController < ApplicationController
   end
 
 # non REST actions
+
+  def archive
+    @task = Task.find params[:task_id]
+    if @task.archive!
+      redirect_to :back, :notice => "'#{@task.name}' has been archived"      
+    else
+      redirect_to :back, :alert => "'#{@task.name}' is already archived"
+    end
+  end
   
   def interrupt
     @task = Task.find params[:task_id]

@@ -18,6 +18,14 @@ class Task < ActiveRecord::Base
   
   after_create :interrupt_previous_running_task_if_the_new_one_is_running
   
+  scope :actives, where(:archived => false)
+  
+  def archive!
+    return false if archived?
+    interrupt!
+    update_attributes :archived => true
+  end
+  
   def self.by_dates_from(tasks, date)
     result = {}
     (date..Date.today).each { |date| result[date] = tasks.on_date(date) }
@@ -49,7 +57,8 @@ class Task < ActiveRecord::Base
   def resume!
     return false if running?
     Task.running_task.try :interrupt!
-    self.sessions.create :start => DateTime.now
+    update_attributes! :archived => false
+    sessions.create :start => DateTime.now
   end
   
   def running?
@@ -61,7 +70,9 @@ class Task < ActiveRecord::Base
   end
   
   def status
-    if running? then "running" else "interrupted" end
+    return "archived" if archived?
+    return "running" if running?
+    "interrupted"
   end
   
   private
@@ -71,7 +82,7 @@ class Task < ActiveRecord::Base
   end 
 
   def interrupt_previous_running_task_if_the_new_one_is_running
-    Task.running_tasks.where("tasks.id <> ?", self.id).first.try :interrupt!
+    Task.running_tasks.where("tasks.id <> ?", id).first.try :interrupt!
   end
 
   def self.on_date(date)
@@ -84,6 +95,7 @@ class Task < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: tasks
@@ -94,5 +106,6 @@ end
 #  created_at :datetime
 #  updated_at :datetime
 #  estimation :float
+#  archived   :boolean         default(FALSE)
 #
 

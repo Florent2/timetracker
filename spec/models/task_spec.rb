@@ -102,6 +102,11 @@ describe Task do
       Fabricate(:interrupted_task).resume!
       running_task.running?.should be_false
     end
+    it "sets archived to false if the task was archived" do
+      task = Fabricate :archived_task
+      task.resume!
+      task.archived?.should be_false
+    end
   end
   
   describe "#duration_current" do
@@ -167,7 +172,26 @@ describe Task do
       Date.today  => [task3]
     }
   end
+  
+  describe "#archive!" do
+    it "returns true and set archived to true if task was interrupted" do
+      task = Fabricate :interrupted_task
+      task.archive!.should be_true
+      task.archived?.should be_true
+    end
+    it "returns true, set archived to true and interrupt last session if task was running" do
+      task = Fabricate :running_task
+      task.archive!
+      task.archived?.should be_true
+      task.running?.should be_false
+    end
+    it "returns false if task was already archived" do
+      task = Fabricate :archived_task
+      task.archive!.should be_false
+    end
+  end
 end
+
 
 
 # == Schema Information
@@ -180,5 +204,6 @@ end
 #  created_at :datetime
 #  updated_at :datetime
 #  estimation :float
+#  archived   :boolean         default(FALSE)
 #
 

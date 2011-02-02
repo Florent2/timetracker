@@ -19,3 +19,7 @@ end
 Fabricator(:interrupted_task, :from => :task) do
   after_create { |task| task.sessions << Fabricate(:session, :task => task, :start => DateTime.current.advance(:hours => -1), :finish => DateTime.current) }
 end
+
+Fabricator(:archived_task, :from => :task) do
+  archived true
+end

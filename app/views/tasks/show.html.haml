@@ -20,8 +20,10 @@
     = interrupt_link @task
   - else
     = resume_link @task
+  - if !@task.archived?
+    = archive_link @task
   = link_to 'edit', edit_task_path(@task)
-  = link_to 'destroy', @task, :confirm => 'Are you sure?', :method => :delete, :class => "button"
+  = link_to 'destroy', @task, :confirm => 'Are you sure?', :method => :delete
 
 - if @task.sessions.present?
   %h2 Sessions

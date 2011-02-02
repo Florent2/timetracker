@@ -1,4 +1,9 @@
 module ApplicationHelper
+
+  def archive_link(task, options={})
+    options.reverse_merge! :method => :put
+    link_to "archive", task_archive_path(task), options
+  end
   
   def interrupt_link(task, options={})
     options.reverse_merge! :method => :put

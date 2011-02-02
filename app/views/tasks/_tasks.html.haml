@@ -2,10 +2,10 @@
   %tr
     %th Name
     %th Project
-    %th Status
     %th This day
     %th Total
     %th Estimation
+    %th Status    
     %th Action
 
   - tasks_by_dates.each_pair do |date, tasks|
@@ -15,9 +15,14 @@
       %tr
         %td= link_to task.name, task
         %td= link_to task.project.name, task.project
-        %td= task.status
         %td= task.duration_on_date date
         %td= task.duration_total
         %td= task.estimation
-        %td= if task.running? then interrupt_link(task) else resume_link(task) end
+        %td= task.status
+        %td
+          = interrupt_link(task) if task.running?
+          = resume_link(task) if task.archived? || !task.running?
+          = archive_link(task) unless task.archived?
+
+        
           
