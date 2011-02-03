@@ -18,8 +18,8 @@ class Task < ActiveRecord::Base
   
   after_create :interrupt_previous_running_task_if_the_new_one_is_running
   
-  scope :actives, where(:archived => false)
-  
+  scope :actives,       where(:archived => false)
+  scope :recents_first, order("updated_at DESC")
   def archive!
     return false if archived?
     interrupt!

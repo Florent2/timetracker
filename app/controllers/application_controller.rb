@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   private
   
   def get_interrupted_tasks
-    @interrupted_tasks = Task.actives - [@running_task]
+    @interrupted_tasks = Task.actives.recents_first - [@running_task]
   end
   
   def get_projects
