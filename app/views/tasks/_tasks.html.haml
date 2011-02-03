@@ -1,3 +1,8 @@
+%p
+  Total duration=
+  = Task.duration_total_from_tasks_by_dates tasks_by_dates
+  hours
+
 %table
   %tr
     %th Name
@@ -11,7 +16,7 @@
   - tasks_by_dates.each_pair do |date, tasks|
     %tr.date
       %td{:colspan => "7"}
-        %h2= date.to_s :human
+        %h2= "#{date.to_s :human} - #{Task.duration_on_date tasks, date} hours"
     - tasks.each do |task|
       = content_tag :tr, :class => cycle(:even_cycle, :odd_cycle) do
         %td= link_to task.name, task

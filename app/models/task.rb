@@ -42,8 +42,18 @@ class Task < ActiveRecord::Base
     sessions.on_date(date).inject(0.0) { |sum, session| sum + session.duration }.round 2
   end
   
+  def self.duration_on_date(tasks, date)
+    tasks.inject(0.0) { |sum, task| sum + task.duration_on_date(date) }.round 2
+  end
+
   def duration_total
     reload.sessions.inject(0.0) { |sum, session| sum + session.duration }.round 2
+  end
+  
+  def self.duration_total_from_tasks_by_dates(tasks_by_dates)
+    result = 0.0
+    tasks_by_dates.each_pair { |date, tasks| result += duration_on_date tasks, date }
+    result.round 2
   end
   
   def interrupt!
