@@ -27,6 +27,7 @@
             %ul
               %li
                 = interrupt_link @running_task, :name => "in"
+                = archive_link @running_task, :name => "a"
                 = link_to @running_task.name, @running_task
               %li= "current duration = #{@running_task.duration_current}"
               %li= "previous duration = #{@running_task.duration_total}"
@@ -39,6 +40,7 @@
               - @interrupted_tasks.each do |interrupted_task|
                 %li
                   = resume_link interrupted_task, :name => "r"
+                  = archive_link interrupted_task, :name => "a"
                   = link_to interrupted_task.name, interrupted_task
 
         - if @projects.present?

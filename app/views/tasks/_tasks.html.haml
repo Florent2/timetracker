@@ -6,7 +6,6 @@
     %th Total
     %th Estimation
     %th Status    
-    %th Actions
 
   - tasks_by_dates.each_pair do |date, tasks|
     %tr.date
@@ -20,10 +19,6 @@
         %td= task.duration_total
         %td= task.estimation
         %td= status_span task
-        %td
-          = interrupt_link(task) if task.running?
-          = resume_link(task) if task.archived? || !task.running?
-          = archive_link(task) unless task.archived?
     - reset_cycle
 
         
