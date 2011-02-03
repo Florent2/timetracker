@@ -124,6 +124,31 @@ body.bp {
 
 	/* Various */
 
+	label {
+		width: 6em;
+		float: left;
+		text-align: right;
+		display: block;
+		margin-right: 0.5em;
+	}
+	
+	p#button {
+		margin-top: 10px;
+		margin-left: 6em;
+	}
+	
+	label, select {
+		margin-top: 0.8em;
+	}
+
+	input#task_project_name {
+		width:100px;
+	}
+	
+	input#task_estimation {
+		width:40px;
+	}
+
 	tr.date {
 		td {
 			padding-top: 20px;			
