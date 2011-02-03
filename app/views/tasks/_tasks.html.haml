@@ -6,23 +6,25 @@
     %th Total
     %th Estimation
     %th Status    
-    %th Action
+    %th Actions
 
   - tasks_by_dates.each_pair do |date, tasks|
     %tr.date
-      %td= date.to_s :human
+      %td{:colspan => "7"}
+        %h2= date.to_s :human
     - tasks.each do |task|
-      %tr
+      = content_tag :tr, :class => cycle(:even_cycle, :odd_cycle) do
         %td= link_to task.name, task
         %td= link_to task.project.name, task.project
         %td= task.duration_on_date date
         %td= task.duration_total
         %td= task.estimation
-        %td= task.status
+        %td= status_span task
         %td
           = interrupt_link(task) if task.running?
           = resume_link(task) if task.archived? || !task.running?
           = archive_link(task) unless task.archived?
+    - reset_cycle
 
         
           

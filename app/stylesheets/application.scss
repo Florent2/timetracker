@@ -1,0 +1,171 @@
+@import "compass";
+@import "compass/css3/border-radius";
+@import "compass/utilities";
+
+/* Layout */
+
+body.bp {
+
+	$interrupt: #C0311A;
+	$resume: #097054;
+	$archive: #273233;
+	$brown: #BDB798;
+	$lightbrown: #CCC097;	
+	
+	background-color: $lightbrown;
+	
+	#container {
+		margin-top: 10px;
+		border: 2px solid gray;
+		background-color: white;
+		padding: 10px;
+	}
+	#header {
+		margin-top: 10px;
+		text-align:center;
+		border-bottom: 1px dotted gray;				
+		margin-bottom: 5px;
+	}
+
+	#sidebar {
+		padding-right: 20px;
+		padding-left: 10px;
+		width: 200px;
+		border-right: 1px dotted gray;		
+		margin-top:5px;
+		li {
+			margin-bottom: 0.1em;
+		}
+	}
+
+	#sidebar ul#actions {
+		padding-left:1em;
+		margin-right:0em;
+		list-style: none;
+		font-size: 1.5em;
+		margin-bottom: 0.5em;
+	}
+
+	#sidebar ul#actions li {
+		display:inline;
+	}
+
+	#sidebar .box {
+		background-color: $brown;
+		h2 {
+			font-size:1.8em;
+			text-align:center;
+			color: #412F1B;
+			margin-bottom:0.5em;
+		}
+		@include border-radius(25px);
+		padding: 1em;
+		ul, ol {
+			padding-left: 2em;
+			margin-bottom: 0em;
+		}
+	}
+
+	#content {
+		margin-top: 30px;
+		padding-left:10px;
+		width:699px;
+	}
+
+	/* Links and buttons */
+
+	a, a:visited {
+		text-decoration: none;
+		color: #412F1B;
+	}
+	a:hover {
+		text-decoration: underline;
+	}
+
+	a.action {
+		padding: 0.2em;
+		color:white;
+		background-color: $archive;	
+		text-decoration:none;
+		text-align:center;
+		@include border-radius(5px);	
+	}
+
+	a.action:hover {
+		color:gray;
+	}
+
+	a.interrupt {
+		background-color: $interrupt;
+	}
+
+	a.archive {
+		padding-left:0.5em;
+		padding-right:0.5em;	
+	}
+
+	a.resume {
+		background-color: $resume;
+		padding-left:0.5em;
+		padding-right:0.5em;
+	}
+
+	span.interrupted {
+		color: $interrupt;
+	}
+
+	span.archived {
+		color: $archive;
+	}
+
+	span.running {
+		color: $resume;
+	}
+
+	/* Various */
+
+	tr.date {
+		td {
+			padding-top: 20px;			
+			text-align: center;
+			h2 {
+				font-size: 1.5em;
+			}
+		}
+	}
+	
+	tr.even_cycle {
+		background-color: $lightbrown;
+	}
+	/* Flash messages*/
+
+	.notice {
+	  padding: 0.8em;
+	  margin-bottom: 2em;
+	  border: 2px solid #dddddd;
+	  background: #e6efc2;
+	  color: #264409;
+	  border-color: #c6d880;
+	}
+	
+	.notice a {
+	  color: #264409;
+		p {
+			color: blue;
+		}
+	}
+
+	.alert {
+	  padding: 0.8em;
+	  margin-bottom: 2em;
+	  border: 2px solid #dddddd;
+	  background: #fbe3e4;
+	  color: #8a1f11;
+	  border-color: #fbc2c4;
+	}
+	
+	.alert a {
+	  color: #8a1f11;
+	}
+}
+

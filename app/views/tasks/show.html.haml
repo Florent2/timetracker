@@ -1,6 +1,15 @@
+= content_for :title, @task.name
+
 %p
-  %b Name:
-  = @task.name
+  - if @task.running?
+    = interrupt_link @task
+  - else
+    = resume_link @task
+  - if !@task.archived?
+    = archive_link @task
+  = link_to 'edit', edit_task_path(@task), :class => "action archive"
+  = link_to 'destroy', @task, :confirm => 'Are you sure?', :method => :delete, :class => "action archive"
+
 %p
   %b Project:
   = link_to @task.project.name, @task.project
@@ -14,16 +23,7 @@
   hours
 %p
   %b Status:
-  = @task.status
-%p
-  - if @task.running?
-    = interrupt_link @task
-  - else
-    = resume_link @task
-  - if !@task.archived?
-    = archive_link @task
-  = link_to 'edit', edit_task_path(@task)
-  = link_to 'destroy', @task, :confirm => 'Are you sure?', :method => :delete
+  = status_span @task
 
 - if @task.sessions.present?
   %h2 Sessions
@@ -36,4 +36,3 @@
           = "Running since #{session.start.to_s(:short)}"
         %br
         = "Duration = #{session.duration} hours"
-= link_to 'Back', tasks_path

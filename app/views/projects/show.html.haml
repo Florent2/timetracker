@@ -1,4 +1,4 @@
-%h1 #{@project.name}
+= content_for :title, @project.name
 
 - if @tasks_by_dates.present?
   = render "tasks/tasks", :tasks_by_dates => @tasks_by_dates

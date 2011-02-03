@@ -6,34 +6,52 @@
     = stylesheet_link_tag 'compiled/print.css', :media => 'print'
     /[if IE]
       = stylesheet_link_tag 'compiled/ie.css', :media => 'screen, projection'
+    = stylesheet_link_tag 'compiled/application.css', :media => 'screen, projection'
     = csrf_meta_tag
   %body.bp.two-col
     #container
+
       #header
         %h1= yield :title
+
       #sidebar
-        = link_to "New Task", new_task_path
-        %p= link_to "All Tasks", tasks_path
+        %ul#actions
+          %li
+            = link_to "New Task", new_task_path
+            |
+          %li= link_to "All Tasks", tasks_path
+
         - if @running_task
-          %h2 Running Task
-          %p= link_to @running_task.name, @running_task
-          %p (#{interrupt_link @running_task})          
-          %p= "Current Duration = #{@running_task.duration_current} hours"
-          %p= "Total Duration = #{@running_task.duration_total} hours"
-        - if @interrupted_tasks
-          %h2 Interrupted Tasks
-          %ul
-          - @interrupted_tasks.each do |interrupted_task|
-            %li= link_to interrupted_task.name, interrupted_task
-        - if @projects.present?
-          %h2 Projects
-          %ul
-            - @projects.each do |project|
+          %div.box
+            %h2 Running Task
+            %ul
               %li
-                = link_to project.name, project
-                = "(#{project.active_tasks.size} active tasks)" if project.active_tasks.present?
+                = interrupt_link @running_task, :name => "in"
+                = link_to @running_task.name, @running_task
+              %li= "current duration = #{@running_task.duration_current}"
+              %li= "total = #{@running_task.duration_total}"
+
+        - if @interrupted_tasks
+          %div.box
+            %h2= "Interrupted Tasks"
+            %ol
+              - @interrupted_tasks.each do |interrupted_task|
+                %li
+                  = resume_link interrupted_task, :name => "r"
+                  = link_to interrupted_task.name, interrupted_task
+
+        - if @projects.present?
+          %div.box
+            %h2 Projects
+            %ul
+              - @projects.each do |project|
+                %li
+                  = link_to project.name, project
+                  = "(#{project.active_tasks.size} actives)" if project.active_tasks.present?
+
       #content
         - flash.each do |name, msg|
           = content_tag :div, msg, :class => name
         = yield
+
     = javascript_include_tag :defaults

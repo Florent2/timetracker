@@ -1,7 +1,3 @@
-%h1 Editing task
+= content_for :title, "Edit #{@task.name}"
 
 = render 'form'
-
-= link_to 'Show', @task
-\|
-= link_to 'Back', tasks_path

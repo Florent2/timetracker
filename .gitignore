@@ -15,3 +15,4 @@ db/schema.rb
 spec/helpers
 spec/routing
 spec/requests
+public/stylesheets/compiled/
