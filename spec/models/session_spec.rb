@@ -21,12 +21,21 @@ describe Session do
     end
   end
   
-  describe "#duration" do
-    it "returns the difference between start and finish times in hours (as float)" do
-      Fabricate(:session, :start => DateTime.current.advance(:hours => -1, :minutes => -20), :finish => DateTime.current.advance(:hours => +1)).duration.should == 2.33
+  describe "#current_duration" do
+    it "is 0.0 if session is not running" do
+      Fabricate(:finished_session).current_duration.should == 0.0
     end
-    it "calculates from the current time if finish time is nil" do
-      Fabricate(:session, :start => DateTime.current.advance(:hours => -1, :minutes => -20), :finish => nil).duration.should == 1.33
+    it "is the duration between start and current datetime if session is running" do
+      Fabricate(:session, :start => DateTime.current.advance(:hours => -1)).current_duration.should == 1.0
+    end
+  end
+  
+  describe "#duration" do
+    it "is set to 0.0 when the task is created without finish attribute" do
+      Fabricate(:session, :finish => nil).duration.should == 0.0
+    end
+    it "is set when the task is saved with a finish attribute" do
+      Fabricate(:finished_session).duration.should == 1.0
     end
   end
   
@@ -53,6 +62,7 @@ describe Session do
   end
   
 end
+
 # == Schema Information
 #
 # Table name: sessions
@@ -63,5 +73,6 @@ end
 #  finish     :datetime
 #  created_at :datetime
 #  updated_at :datetime
+#  duration   :float           default(0.0)
 #
 

@@ -2,7 +2,9 @@ class TasksController < ApplicationController
   before_filter :find_task
   
   def index
-    @tasks_by_dates = Task.by_dates_from Task, Date.current.advance(:days => -7)
+    from_date       = Date.current.advance(:days => -7)
+    @tasks_by_dates = Task.by_dates_from Task, from_date
+    @total_duration = Task.duration_from Task.all, from_date
   end
 
   def show
@@ -61,7 +63,7 @@ class TasksController < ApplicationController
   def resume
     @task = Task.find params[:task_id]
     if @task.resume!
-      redirect_to :back, :notice => "'#{@task.name}' has been resumeed"      
+      redirect_to :back, :notice => "'#{@task.name}' has been resumed"      
     else
       redirect_to :back, :alert => "'#{@task.name}' is already running"
     end

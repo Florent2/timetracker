@@ -1,15 +1,10 @@
 class ProjectsController < ApplicationController
 
-  before_filter :find_project
-  
   def show
-    @tasks_by_dates = Task.by_dates_from @project.tasks, Date.current.advance(:days => -7)
-  end
-
-  private
-
-  def find_project
-    @project = Project.find(params[:id]) if params[:id]
+    @project        = Project.find(params[:id]) if params[:id]    
+    from_date       = Date.current.advance(:days => -7)
+    @tasks_by_dates = Task.by_dates_from @project.tasks, from_date
+    @total_duration = Task.duration_from @project.tasks, from_date
   end
 
 end

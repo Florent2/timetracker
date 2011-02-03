@@ -5,12 +5,14 @@ class Session < ActiveRecord::Base
   validates_presence_of :start
   
   validates_datetime :finish, :after => :start, :allow_blank => true
+
+  before_save :set_duration
   
   scope :running, where(:finish => nil)
-  
-  def duration
-    finish_or_now = finish || Time.zone.now
-    ((finish_or_now - start) / 3600.0).round 2
+
+  def current_duration
+    return 0.0 if !running?
+    ((Time.zone.now - start) / 3600.0).round 2
   end
   
   def finish!
@@ -22,6 +24,10 @@ class Session < ActiveRecord::Base
     result    
   end
 
+  def self.from_date(date)
+    where :start => date.beginning_of_day..Date.today.end_of_day
+  end
+
     # we only compare the start datetime as we consider that a task does not pass midnight (I'm a day worker!)
   def self.on_date(date)
     where :start => date.beginning_of_day..date.end_of_day
@@ -31,7 +37,13 @@ class Session < ActiveRecord::Base
     finish.nil?
   end  
   
+  private
+  
+  def set_duration
+    self.duration =  ((finish - start) / 3600.0).round(2) if finish? && finish_changed?
+  end
 end
+
 
 
 # == Schema Information
@@ -44,5 +56,6 @@ end
 #  finish     :datetime
 #  created_at :datetime
 #  updated_at :datetime
+#  duration   :float           default(0.0)
 #
 

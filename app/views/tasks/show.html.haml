@@ -11,6 +11,9 @@
   = link_to 'destroy', @task, :confirm => 'Are you sure?', :method => :delete, :class => "action archive"
 
 %p
+  %b Status:
+  = status_span @task
+%p
   %b Project:
   = link_to @task.project.name, @task.project
 %p
@@ -21,9 +24,6 @@
   %b Estimation:
   = @task.estimation
   hours
-%p
-  %b Status:
-  = status_span @task
 
 - if @task.sessions.present?
   %h2 Sessions

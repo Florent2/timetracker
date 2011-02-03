@@ -1,3 +1,8 @@
 = content_for :title, "All Tasks"
 
+%p
+  Total duration=
+  = @total_duration
+  hours
+
 = render "tasks", :tasks_by_dates => @tasks_by_dates

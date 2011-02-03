@@ -1,6 +1,11 @@
 = content_for :title, @project.name
 
 - if @tasks_by_dates.present?
+  %p
+    Total duration=
+    = @total_duration
+    hours
+  
   = render "tasks/tasks", :tasks_by_dates => @tasks_by_dates
 - else
   %p No tasks in this project.

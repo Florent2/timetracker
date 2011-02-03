@@ -12,6 +12,10 @@ Fabricator(:session) do
   start { DateTime.current }
 end
 
+Fabricator(:finished_session, :from => :session) do
+  finish { DateTime.current.advance :hours => 1 }
+end
+
 Fabricator(:running_task, :from => :task) do
   after_create { |task| task.sessions << Fabricate(:session, :task => task, :finish => nil) }
 end

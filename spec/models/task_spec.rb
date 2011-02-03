@@ -41,9 +41,9 @@ describe Task do
     it "returns 0 if task has no sessions" do
       Fabricate(:task).duration_total.should == 0.0
     end
-    it "for a task with an unfinished session it calculates from the current time" do
+    it "for a task with an unfinished session it does not include the running session" do
       session = Fabricate :session, :start => DateTime.current.advance(:hours => -1)
-      session.task.duration_total.should == 1.0
+      session.task.duration_total.should == 0.0
     end
     it "for a task with several sessions" do
       task = Fabricate :task

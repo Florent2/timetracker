@@ -32,8 +32,8 @@ feature "Interrupt And Resume Task", %q{
   end
   
   scenario "Task Resuming Interrupts Current Running Task" do
-    running_task = Fabricate :running_task
     task = Fabricate :interrupted_task
+    running_task = Fabricate :running_task    
     visit "/tasks/#{task.id}"
     click_link "resume"
     page.should have_content("running")

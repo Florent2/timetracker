@@ -29,7 +29,8 @@
                 = interrupt_link @running_task, :name => "in"
                 = link_to @running_task.name, @running_task
               %li= "current duration = #{@running_task.duration_current}"
-              %li= "total = #{@running_task.duration_total}"
+              %li= "previous duration = #{@running_task.duration_total}"
+              %li= "estimation = #{@running_task.estimation}"
 
         - if @interrupted_tasks
           %div.box
