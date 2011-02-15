@@ -2,9 +2,9 @@ class TasksController < ApplicationController
   before_filter :find_task
   
   def index
-    from_date       = Date.current.advance(:days => -7)
-    @tasks_by_dates = Task.by_dates_from Task, from_date
-    @total_duration = Task.duration_from Task.all, from_date
+    @from_date      = Date.current.advance(:days => -7)
+    @tasks_by_dates = Task.by_dates_from Task, @from_date
+    @total_duration = Task.duration_from Task.all, @from_date
   end
 
   def show

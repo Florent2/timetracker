@@ -1,11 +1,17 @@
 = content_for :title, @project.name
 
+- if @tasks.any?
+  %h2 Tasks
+  %ul
+    - @tasks.each do |task|
+      %li
+        = link_to task.name, task
+        = "(#{task.duration_total} hours)"
 - if @tasks_by_dates.present?
-  %p
-    Total duration=
-    = @total_duration
-    hours
-  
+  %h2= "From #{@from_date.to_s(:human)}"
+  %p= "Time spent = #{@total_duration} hours"
   = render "tasks/tasks", :tasks_by_dates => @tasks_by_dates
 - else
-  %p No tasks in this project.
+  %p 
+    No tasks in this project from 
+    = @from_date.to_s(:human)

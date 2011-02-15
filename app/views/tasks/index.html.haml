@@ -1,8 +1,6 @@
 = content_for :title, "All Tasks"
 
-%p
-  Total duration=
-  = @total_duration
-  hours
+%h2= "From #{@from_date.to_s(:human)}"
+%p= "Time spent = #{@total_duration} hours"
 
 = render "tasks", :tasks_by_dates => @tasks_by_dates
