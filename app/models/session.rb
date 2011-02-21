@@ -33,6 +33,10 @@ class Session < ActiveRecord::Base
     where :start => date.beginning_of_day..date.end_of_day
   end
   
+  def project_tasks
+    task.project.tasks
+  end
+  
   def running?
     finish.nil?
   end  

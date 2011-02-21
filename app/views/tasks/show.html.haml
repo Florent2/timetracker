@@ -31,8 +31,9 @@
     - @task.sessions.each do |session|
       %li
         - if session.finish?
-          = "From #{session.start.to_s(:short)} to #{session.finish.to_s(:short)}"
+          = "#{session.duration} hours starting from #{session.start.to_s(:short)}"
+          = link_to 'edit', edit_session_path(session), :class => "action"
+          = link_to 'destroy', session, :confirm => 'Are you sure?', :method => :delete, :class => "action"
         - else
           = "Running since #{session.start.to_s(:short)}"
-        %br
-        = "Duration = #{session.duration} hours"
+        

@@ -1,0 +1,23 @@
+= content_for :title, "Edit session of task '#{@session.task.name}'"
+
+= form_for @session, :html => {:class => "bp"} do |f|
+  -if @session.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@session.errors.count, "error")} prohibited this session from being saved:"
+      %ul
+        - @session.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :task_id
+    = f.select :task_id, @session.project_tasks.recents_first.collect {|t| [ t.name, t.id ] }
+  
+  .field
+    = f.label :start
+    = f.datetime_select :start, :discard_year => true, :discard_month => true
+
+  .field
+    = f.label :finish
+    = f.datetime_select :finish, :discard_year => true, :discard_month => true
+
+  %p#button= f.submit 'Save'
