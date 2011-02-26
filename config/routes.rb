@@ -1,4 +1,4 @@
-Timetracker2::Application.routes.draw do
+Timetracker::Application.routes.draw do
   resources :projects 
     
   resources :tasks do

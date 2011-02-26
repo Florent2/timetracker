@@ -4,4 +4,4 @@
 require File.expand_path('../config/application', __FILE__)
 require 'rake'
 
-Timetracker2::Application.load_tasks
+Timetracker::Application.load_tasks
