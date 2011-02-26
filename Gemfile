@@ -11,19 +11,26 @@ gem "jquery-rails"
 gem "validates_lengths_from_database"
 gem "attribute_normalizer"
 gem "validates_timeliness"
-gem "annotate", :group => :development
-gem "faker", :group => [:development, :test]
-gem "fabrication", :group => [:development, :test]
-gem "rspec-rails", ">= 2.2.1", :group => [:development, :test]
-gem "capybara", :group => [:development, :test]
-gem "steak", :group => [:development, :test]
-gem "database_cleaner", :group => :test
-gem "webmock", :group => :test
-gem "spork", :group => :test
-gem "autotest", :group => :test
-gem "autotest-rails-pure", :group => :test
-gem "autotest-growl", :group => :test
-gem "autotest-fsevent", :group => :test
-gem "shoulda", :group => :test
-gem "launchy", :group => :test
-gem "fuubar", :group => [:development, :test]
+
+group :development do
+  gem "annotate"  
+  gem "fabrication"  
+  gem "rspec-rails"  
+  gem "capybara"  
+  gem "steak"
+end
+
+group :test do
+  gem "fabrication"  
+  gem "rspec-rails"
+  gem "capybara"  
+  gem "steak"
+  gem 'spork', '~> 0.9.0.rc'  
+  gem 'autotest'
+  gem 'autotest-rails-pure'
+  gem 'autotest-growl'
+  gem 'autotest-fsevent'  
+  gem "shoulda"
+  gem "launchy"
+  gem "fuubar"
+end
