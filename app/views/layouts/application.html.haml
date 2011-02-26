@@ -27,19 +27,19 @@
             %ul
               %li
                 = interrupt_link @running_task, :name => "in"
-                = archive_link @running_task, :name => "a"
+                = archive_link @running_task, :name => "a", :accesskey => "a"
                 = link_to @running_task.name, @running_task
               %li= "current duration = #{@running_task.duration_current}"
               %li= "previous duration = #{@running_task.duration_total}"
               %li= "estimation = #{@running_task.estimation}"
 
-        - if @interrupted_tasks
+        - if @interrupted_tasks.present?
           %div.box
             %h2= "Interrupted Tasks"
             %ol
-              - @interrupted_tasks.each do |interrupted_task|
+              - @interrupted_tasks.each_with_index do |interrupted_task, index|
                 %li
-                  = resume_link interrupted_task, :name => "r"
+                  = resume_link interrupted_task, :name => "r", :accesskey => "#{index + 1}"
                   = archive_link interrupted_task, :name => "a"
                   = link_to interrupted_task.name, interrupted_task
 
