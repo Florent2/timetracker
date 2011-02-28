@@ -17,9 +17,9 @@
       #sidebar
         %ul#actions
           %li
-            = link_to "New Task", new_task_path
+            = link_to "New Task", new_task_path, :accesskey => "n"
             |
-          %li= link_to "All Tasks", tasks_path
+          %li= link_to "All Tasks", tasks_path, :accesskey => "a"
 
         - if @running_task
           %div.box
@@ -27,7 +27,7 @@
             %ul
               %li
                 = interrupt_link @running_task, :name => "in"
-                = archive_link @running_task, :name => "a", :accesskey => "a"
+                = archive_link @running_task, :name => "a"
                 = link_to @running_task.name, @running_task
               %li= "current duration = #{@running_task.duration_current}"
               %li= "previous duration = #{@running_task.duration_total}"
