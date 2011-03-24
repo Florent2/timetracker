@@ -26,6 +26,7 @@ class Task < ActiveRecord::Base
     update_attributes :archived => true
   end
   
+  # inefficient, should check if that's possible to move the logic in the DB
   def self.by_dates_from(tasks, date)
     result = {}
     (date..Date.today).each { |date| result[date] = tasks.on_date(date) }
