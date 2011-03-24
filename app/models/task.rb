@@ -87,7 +87,7 @@ class Task < ActiveRecord::Base
   private
   
   def create_or_associate_project_from_project_name
-    self.project = Project.find_or_create_by_name project_name if project_name.present? # can't use :if => :project_name in the before_validation call, as it is called even when project_name is ""
+    self.project = Project.find_or_create_by_name project_name if project_name.present? # can't use :if => :project_name? in the before_validation call because project_name is a virtual attribute
   end 
 
   def interrupt_previous_running_task_if_the_new_one_is_running
