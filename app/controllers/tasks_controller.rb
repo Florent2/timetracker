@@ -40,7 +40,7 @@ class TasksController < ApplicationController
     redirect_to tasks_url, :notice => "'#{@task.name}' has been successfully destroyed"
   end
 
-# non REST actions
+# non default actions
 
   def archive
     @task = Task.find params[:task_id]
